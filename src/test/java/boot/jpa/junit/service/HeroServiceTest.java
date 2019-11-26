@@ -2,7 +2,9 @@ package boot.jpa.junit.service;
 
 import boot.jpa.junit.domain.hero.HeroRepository;
 import boot.jpa.junit.dto.HeroFindAllResponseDto;
+import boot.jpa.junit.dto.HeroFindByIdResponseDto;
 import boot.jpa.junit.dto.HeroSaveRequestDto;
+import boot.jpa.junit.dto.HeroUpdateRequestDto;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +35,7 @@ public class HeroServiceTest {
 
     @Test
     public void HeroSaveRequestTest() {
+        // given
         HeroSaveRequestDto input = HeroSaveRequestDto.builder()
                 .name("github.com/notabene08")
                 .age(26)
@@ -46,7 +49,8 @@ public class HeroServiceTest {
     }
 
     @Test
-    public void HeroFindAllResponseTest(){
+    public void HeroFindAllResponseTest() {
+        // given
         HeroSaveRequestDto input = HeroSaveRequestDto.builder()
                 .name("github.com/notabene08")
                 .age(26)
@@ -61,5 +65,46 @@ public class HeroServiceTest {
 
         //then
         assertThat(output.size(), is(10));
+    }
+
+    @Test
+    public void HeroFindIdResponseTest() {
+        // given
+        HeroSaveRequestDto input = HeroSaveRequestDto.builder()
+                .name("github.com/notabene08")
+                .age(26)
+                .note("github.com/notabene08")
+                .build();
+
+        heroService.HeroSaveRequest(input);
+
+        HeroFindByIdResponseDto output = heroService.HeroFindByIdResponse(1L);
+
+        assertThat(input.getName(),is(output.getName()));
+        assertThat(input.getAge(), is(output.getAge()));
+        assertThat(input.getNote(), is(output.getNote()));
+    }
+
+    @Test
+    public void HeroUpdateRequestTest() {
+        // given
+        HeroSaveRequestDto input = HeroSaveRequestDto.builder()
+                .name("github.com/notabene08")
+                .age(26)
+                .note("github.com/notabene08")
+                .build();
+
+        heroService.HeroSaveRequest(input);
+
+        // when
+        Long output = heroService.HeroUpdateRequest(HeroUpdateRequestDto.builder()
+                .id(1L)
+                .name("github.com/notabene08")
+                .age(26)
+                .note("github.com/notabene08")
+                .build());
+
+        // then
+        assertThat(output,is(1L));
     }
 }
