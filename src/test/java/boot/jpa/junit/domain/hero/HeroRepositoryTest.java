@@ -79,7 +79,7 @@ public class HeroRepositoryTest {
     }
 
     @Test
-    public void HeroFindByResponseTest(){
+    public void HeroFindByResponseTest() {
         //given
         Hero input = Hero.builder()
                 .name("github.com/notabene08")
@@ -99,10 +99,10 @@ public class HeroRepositoryTest {
     }
 
     @Test
-    public void HeroUpdateRequestTest(){
+    public void HeroUpdateRequestTest() {
         Hero input = Hero.builder()
                 .name("github.com/notabene08")
-                .age(25)
+                .age(26)
                 .note("github.com/notabene08")
                 .build();
 
@@ -112,7 +112,7 @@ public class HeroRepositoryTest {
         heroRepository.save(Hero.builder()
                 .id(1L)
                 .name("github.com/notabene08")
-                .age(25)
+                .age(26)
                 .note("github.com/notabene08")
                 .build());
 
@@ -124,10 +124,22 @@ public class HeroRepositoryTest {
                 .isAfter(input.getModifiedDate()));
     }
 
-    public String toStringCreateDate(LocalDateTime createDate){
+    public String toStringCreateDate(LocalDateTime createDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return Optional.ofNullable(createDate)
                 .map(formatter::format)
                 .orElse("");
+    }
+
+    @Test
+    public void HeroDeleteRequest() {
+        heroRepository.save(Hero.builder()
+                .name("github.com/notabene08")
+                .age(26)
+                .note("github.com/notabene08")
+                .build());
+        heroRepository.deleteById(1L);
+
+        assertNull(heroRepository.findById(1L).orElse(null));
     }
 }
