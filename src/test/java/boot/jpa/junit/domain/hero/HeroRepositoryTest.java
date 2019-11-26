@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -25,7 +27,7 @@ public class HeroRepositoryTest {
     }
 
     @Test
-    public void JpaAuditingTest(){
+    public void JpaAuditingTest() {
         // given
         LocalDateTime now = LocalDateTime.parse("2019-11-23T00:00:00");
 
@@ -44,7 +46,7 @@ public class HeroRepositoryTest {
     }
 
     @Test
-    public void HeroSaveRequestTest(){
+    public void HeroSaveRequestTest() {
         Hero input = Hero.builder()
                 .name("github.com/notabene08")
                 .age(26)
@@ -57,6 +59,20 @@ public class HeroRepositoryTest {
         assertThat(input, is(output));
     }
 
+    @Test
+    public void HeroFindAllIdResponseTest() {
+        //given
+        IntStream.rangeClosed(1, 10).forEach(i ->
+                heroRepository.save(Hero.builder()
+                        .name("github.com/notabene08")
+                        .age(26)
+                        .note("github.com/notabene08")
+                        .build()));
 
+        //when
+        List<Hero> output = heroRepository.findAll();
 
+        //then
+        assertThat(output.size(), is(10));
+    }
 }
