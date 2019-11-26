@@ -17,7 +17,7 @@ public class WebControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void IndexTemplateRequestTest(){
+    public void IndexTemplateRequestTest() {
         String index = this.testRestTemplate.getForObject("/",String.class);
 
         assertThat(index).contains("JUnit Project");
