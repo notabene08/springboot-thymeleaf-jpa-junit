@@ -107,4 +107,22 @@ public class HeroServiceTest {
         // then
         assertThat(output,is(1L));
     }
+
+    @Test
+    public void HeroDeleteByIdRequestTest() {
+        // given
+        HeroSaveRequestDto input = HeroSaveRequestDto.builder()
+                .name("github.com/notabene08")
+                .age(26)
+                .note("github.com/notabene08")
+                .build();
+
+        heroService.HeroSaveRequest(input);
+
+        // when
+        heroService.HeroDeleteByIdRequest(1L);
+
+        // then
+        assertThat(heroService.HeroFindAllResponse().size(), is(0));
+    }
 }
